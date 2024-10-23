@@ -4,65 +4,68 @@ import 'package:flutter_ecommerce/modules/ui-sections/home/views/home-page.dart'
 import 'package:flutter_ecommerce/modules/ui-sections/oauth/common/continue-with-social-login.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/oauth/login/model/oauth-enums.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/oauth/login/viewModel/auth-controller.dart';
-import 'package:flutter_ecommerce/modules/ui-sections/oauth/singup/views/signup-screen.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../common-views/custom-text-field.dart';
-import '../../forgot-password/views/forgot-password-view.dart';
 
-class LoginScreen extends StatelessWidget {
+class SignupScreen extends StatelessWidget {
   final _controller = Get.put(AuthController());
-  LoginScreen({super.key});
+  SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: theme.colorScheme.primaryContainer,
         toolbarHeight: 30,
       ),
-      body: Stack(children: [
-        Container(
-          margin: const EdgeInsets.only(top: 20, left: 31, right: 31),
-          child: Column(children: [
-            _buildTitle(context),
-            const SizedBox(
-              height: 40,
-            ),
-            _buildTextFields(),
-            _buildForgetPassword(),
-            const SizedBox(
-              height: 26,
-            ),
-            makeSignInButton(),
-            const SizedBox(
-              height: 40,
-            ),
-            _buildRichText(),
-            const SizedBox(
-              height: 60,
-            ),
-            ContinueWithSocialView(
-              selectedSocialProviderHandler: (provider) {
-                socialLogin(provider);
-              },
-            ),
-          ]),
-        ),
-        showLoaderIfNeeded(),
-      ]),
+      body: Stack(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 20, left: 31, right: 31),
+            child: Column(children: [
+              _buildTitle(context),
+              const SizedBox(
+                height: 40,
+              ),
+              buildTextFields(context),
+              const SizedBox(
+                height: 50,
+              ),
+              makeSignUpButton(),
+              const SizedBox(
+                height: 30,
+              ),
+              _buildRichText(),
+              const SizedBox(
+                height: 60,
+              ),
+              ContinueWithSocialView(
+                selectedSocialProviderHandler: (provider) {
+                  socialLogin(provider);
+                },
+              ),
+            ]),
+          ),
+          showLoaderIfNeeded(),
+        ],
+      ),
     );
   }
 
   Widget _buildTitle(BuildContext context) {
-    var theme = Theme.of(context);
+    final theme = Theme.of(context);
     return Align(
       alignment: Alignment.centerLeft,
       child: Text(
-        AppLocalizations.of(context)!.sign_in_button_text,
-        style: theme.textTheme.titleLarge?.copyWith(
-            color: theme.colorScheme.onBackground, fontWeight: FontWeight.bold),
+        AppLocalizations.of(context)!.sign_up_screen_title,
+        style: theme.textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.bold,
+          color: theme.colorScheme.onBackground,
+        ),
       ),
     );
   }
@@ -107,30 +110,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildForgetPassword() {
-    final context = navigator!.context;
-    final theme = Theme.of(context);
-    return Container(
-      margin: const EdgeInsets.only(top: 10),
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: TextButton(
-            onPressed: () {
-              Get.to(() => ForgetPasswordView());
-            },
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                AppLocalizations.of(context)!.forgot_password_text,
-                style: TextStyle(color: theme.colorScheme.primary),
-              ),
-            )),
-      ),
-    );
-  }
-
-  Widget _buildTextFields() {
-    final context = navigator!.context;
+  Widget buildTextFields(BuildContext context) {
     return Column(
       children: [
         CustomTextField(
@@ -153,7 +133,20 @@ class LoginScreen extends StatelessWidget {
           onChange: (value) {},
           isObscureText: false,
           validator: _controller.validatePassword,
-        )
+        ),
+        const SizedBox(
+          height: 26,
+        ),
+        CustomTextField(
+          label:
+              AppLocalizations.of(context)!.confirm_password_text_field_label,
+          placeholder: AppLocalizations.of(context)!
+              .confirm_password_text_field_placeholder,
+          controllerValue: _controller.confirmPassword,
+          onChange: (value) {},
+          isObscureText: false,
+          validator: _controller.validatePassword,
+        ),
       ],
     );
   }
@@ -164,32 +157,29 @@ class LoginScreen extends StatelessWidget {
     return RichText(
         text: TextSpan(children: [
       TextSpan(
-          text: "${AppLocalizations.of(context)!.dont_have_account_text} ",
+          text: "${AppLocalizations.of(context)!.already_have_an_account} ",
           style: TextStyle(
               color: theme.colorScheme.onBackground.withOpacity(0.7),
               fontSize: 14)),
       TextSpan(
-        text: AppLocalizations.of(context)!.signupText,
+        text: AppLocalizations.of(context)!.sign_in_button_text,
         style: TextStyle(
             color: theme.colorScheme.primary,
             fontWeight: FontWeight.bold,
             fontSize: 11),
         recognizer: TapGestureRecognizer()
           ..onTap = () {
-            Get.to(() => SignupScreen());
-            // Navigator.push(context, MaterialPageRoute(builder: (_) {
-            //   return const SignupScreen();
-            // }));
+            Get.back();
           },
       )
     ]));
   }
 
-  Widget makeSignInButton() {
+  Widget makeSignUpButton() {
     final context = navigator!.context;
+    final theme = Theme.of(context);
     return Obx(() {
-      bool isValid = _controller.isValidEmailPass;
-      print("Is valid = ${isValid}");
+      bool isValid = _controller.isValidEmailPassConfirmPass;
       return SizedBox(
         width: double.infinity,
         height: 54,
@@ -202,25 +192,22 @@ class LoginScreen extends StatelessWidget {
                     }
                   : null,
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8))),
+                backgroundColor: theme.colorScheme.secondary,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+              ),
               child: Text(
-                AppLocalizations.of(context)!.sign_in_button_text,
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+                AppLocalizations.of(context)!.signupText,
+                style: theme.textTheme.labelLarge?.copyWith(
+                    color: theme.colorScheme.onPrimary, fontSize: 16),
               )),
         ),
       );
     });
   }
 
-  void gotoHome() {
-    Future.microtask(() => Get.to(() => HomePage()));
-  }
-
   Future<void> signupButtonAction() async {
-    bool success = await _controller.loginWithEmail();
+    bool success = await _controller.signup();
     if (success) {
       gotoHome();
     } else {
@@ -240,5 +227,9 @@ class LoginScreen extends StatelessWidget {
       default:
         break;
     }
+  }
+
+  void gotoHome() {
+    Future.microtask(() => Get.to(() => HomePage()));
   }
 }

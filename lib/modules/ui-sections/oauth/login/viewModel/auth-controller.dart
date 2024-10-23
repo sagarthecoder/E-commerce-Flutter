@@ -23,6 +23,12 @@ class AuthController extends GetxController {
       validateEmail(email.value) == null &&
       validatePassword(password.value) == null;
 
+  bool get isValidEmailPassConfirmPass =>
+      validateEmail(email.value) == null &&
+      validatePassword(password.value) == null &&
+      validatePassword(confirmPassword.value) == null &&
+      password.value == confirmPassword.value;
+
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Email cannot be empty';
@@ -57,6 +63,24 @@ class AuthController extends GetxController {
     return false;
   }
 
+  Future<bool> signup() async {
+    if (!isValidEmailPassConfirmPass) {
+      return false;
+    }
+    errorText.value = "";
+    isLoading.value = true;
+    try {
+      await AuthService.shared.signupWithEmail(email.value, password.value);
+      isLoading.value = false;
+      return true;
+    } catch (err) {
+      errorText.value = err.toString();
+      print("Error = ${err.toString()}");
+    }
+    isLoading.value = false;
+    return false;
+  }
+
   Future<bool> googleLogin() async {
     isLoading.value = true;
     errorText.value = "";
@@ -67,6 +91,21 @@ class AuthController extends GetxController {
     } catch (err) {
       errorText.value = err.toString();
       print("Error google signin = ${err.toString()}");
+    }
+    isLoading.value = false;
+    return false;
+  }
+
+  Future<bool> sendResetPasswordEmail(String email) async {
+    isLoading.value = true;
+    errorText.value = "";
+    try {
+      await AuthService.shared.sendResetPasswordEmail(email);
+      isLoading.value = false;
+      return true;
+    } catch (err) {
+      errorText.value = err.toString();
+      print("Error sending password reset email = ${err.toString()}");
     }
     isLoading.value = false;
     return false;
