@@ -13,7 +13,10 @@ import '../../forgot-password/views/forgot-password-view.dart';
 
 class LoginScreen extends StatelessWidget {
   final _controller = Get.put(AuthController());
-  LoginScreen({super.key});
+  LoginScreen({super.key}) {
+    Get.delete<AuthController>(force: true);
+    //_controller.reset();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +154,7 @@ class LoginScreen extends StatelessWidget {
               AppLocalizations.of(context)!.password_text_field_placeholder,
           controllerValue: _controller.password,
           onChange: (value) {},
-          isObscureText: false,
+          isObscureText: true,
           validator: _controller.validatePassword,
         )
       ],

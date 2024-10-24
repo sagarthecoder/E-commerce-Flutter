@@ -17,6 +17,12 @@ class AuthController extends GetxController {
     password.value = "";
     confirmPassword.value = "";
     errorText.value = "";
+
+    // isLoading = false.obs;
+    // email = "".obs;
+    // password = "".obs;
+    // confirmPassword = "".obs;
+    // errorText = "".obs;
   }
 
   bool get isValidEmailPass =>

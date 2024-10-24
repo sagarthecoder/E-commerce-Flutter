@@ -7,9 +7,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../common-views/custom-text-field.dart';
 
 class ForgetPasswordView extends StatelessWidget {
-  final _controller = Get.put(AuthController());
+  final _controller = Get.put(AuthController()); //<AuthController>();
 
-  ForgetPasswordView({super.key}) {}
+  ForgetPasswordView({super.key}) {
+    Get.delete<AuthController>(force: true);
+  }
 
   @override
   Widget build(BuildContext context) {

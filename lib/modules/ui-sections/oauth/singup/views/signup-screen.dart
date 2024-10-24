@@ -10,8 +10,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../common-views/custom-text-field.dart';
 
 class SignupScreen extends StatelessWidget {
-  final _controller = Get.put(AuthController());
-  SignupScreen({super.key});
+  final _controller = Get.put(AuthController()); //<AuthController>();
+  SignupScreen({super.key}) {
+    Get.delete<AuthController>(force: true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +133,7 @@ class SignupScreen extends StatelessWidget {
               AppLocalizations.of(context)!.password_text_field_placeholder,
           controllerValue: _controller.password,
           onChange: (value) {},
-          isObscureText: false,
+          isObscureText: true,
           validator: _controller.validatePassword,
         ),
         const SizedBox(
@@ -144,7 +146,7 @@ class SignupScreen extends StatelessWidget {
               .confirm_password_text_field_placeholder,
           controllerValue: _controller.confirmPassword,
           onChange: (value) {},
-          isObscureText: false,
+          isObscureText: true,
           validator: _controller.validatePassword,
         ),
       ],
