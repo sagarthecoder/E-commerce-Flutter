@@ -4,6 +4,8 @@ import 'package:flutter_ecommerce/modules/ui-sections/custom-tab-bar/custom-tab-
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../dashboard/home/views/dashboard-screen.dart';
+
 class CustomTabbedWidget extends StatelessWidget {
   const CustomTabbedWidget({super.key});
 
@@ -19,15 +21,12 @@ class CustomTabbedWidget extends StatelessWidget {
       ),
       body: TabBarView(
         controller: tabController.controller,
-        children: tabController.tabs.map((Tab tab) {
-          final String label = tab.text ?? "";
-          return Center(
-            child: Text(
-              'This is the $label tab',
-              style: const TextStyle(fontSize: 36),
-            ),
-          );
-        }).toList(),
+        children: [
+          DashboardScreen(),
+          Text("Search"),
+          Text("Cart"),
+          Text("Setting"),
+        ],
       ),
     );
   }

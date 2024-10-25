@@ -8,6 +8,16 @@ class GenericResponse<T> {
   String? status;
 
   GenericResponse({this.message, this.data, this.status});
+
+  // Constructor to directly create from a list for simple lists like List<String> or List<int>
+  factory GenericResponse.fromList(
+      List<dynamic> jsonList, T Function(dynamic) parseItem) {
+    return GenericResponse<T>(
+      data: jsonList.map((item) => parseItem(item)).toList(),
+      status: "200", // You can set a default status if needed
+    );
+  }
+
   factory GenericResponse.fromJson(
     Map<String, dynamic> json,
     T Function(Map<String, dynamic>) fromJsonT,
@@ -16,14 +26,11 @@ class GenericResponse<T> {
 
     List<T>? parsedData;
 
-    // Check if responseData is a list or a single object
     if (responseData is List) {
-      // If it's a list, map each item to T
       parsedData = responseData
           .map<T>((item) => fromJsonT(item as Map<String, dynamic>))
           .toList();
     } else if (responseData is Map<String, dynamic>) {
-      // If it's a single object, wrap it in a list
       parsedData = [fromJsonT(responseData)];
     }
 
@@ -34,7 +41,7 @@ class GenericResponse<T> {
     );
   }
 
-  // toJson method for serialization (optional if needed)
+  // toJson method for serialization
   Map<String, dynamic> toJson(Object Function(T) toJsonT) {
     return {
       'message': message,

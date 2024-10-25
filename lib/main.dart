@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/controller/product-controller.dart';
+import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/services/product-service.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/home/views/home-page.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/oauth/login/views/login-screen.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
@@ -19,6 +21,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   Get.put(LanguageController());
   Get.put(ThemeController());
+  Get.put(ProductController(service: ProductService()));
   runApp(MyApp());
 }
 
