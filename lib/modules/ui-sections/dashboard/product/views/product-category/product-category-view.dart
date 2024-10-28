@@ -20,7 +20,7 @@ class ProductCategoryView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
-            padding: const EdgeInsets.only(left: 16, top: 16),
+            padding: EdgeInsets.only(left: 16, top: 16),
             child: Text(
               "Categories",
               style: TextStyle(
@@ -34,6 +34,7 @@ class ProductCategoryView extends StatelessWidget {
           ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.only(left: 16, right: 16),
             child: Row(
               children: categories
                   .map((category) =>
