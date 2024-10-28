@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 
 class ProductCategoryItemCell extends StatelessWidget {
   final String categoryName;
-  ProductCategoryItemCell({required this.categoryName, super.key});
+  final Function(String) onTap; // Update the callback type
+
+  ProductCategoryItemCell(
+      {required this.categoryName, required this.onTap, super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () => onTap(categoryName), // Pass categoryName to the callback
       child: Container(
         height: 40,
         margin: EdgeInsets.all(4),

@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/custom-tab-bar/custom-tab-controller.dart';
+import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/views/search/SearchScreen.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../dashboard/home/views/dashboard-screen.dart';
 
@@ -23,7 +22,7 @@ class CustomTabbedWidget extends StatelessWidget {
         controller: tabController.controller,
         children: [
           DashboardScreen(),
-          Text("Search"),
+          SearchScreen(),
           Text("Cart"),
           Text("Setting"),
         ],

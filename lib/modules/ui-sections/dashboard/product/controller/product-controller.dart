@@ -7,6 +7,9 @@ class ProductController extends GetxController {
   ProductController({required this.service});
   final categories = <String>[].obs;
   final allProducts = <ProductInfo>[].obs;
+  final searchedProducts = <ProductInfo>[].obs;
+  final isLoading = false.obs;
+
   Future<void> getCategories() async {
     final list = await service.fetchProductCategories();
     if (list == null) return;
@@ -18,5 +21,12 @@ class ProductController extends GetxController {
     if (products == null) return;
     print("product count = ${products.length})");
     allProducts.value = products;
+  }
+
+  Future<List<ProductInfo>> getProducts(String categoryName) async {
+    isLoading.value = true;
+    final list = await service.fetchProductFromCategory(categoryName) ?? [];
+    isLoading.value = false;
+    return list;
   }
 }
