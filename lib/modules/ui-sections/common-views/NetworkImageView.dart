@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 class NetworkImageView extends StatelessWidget {
   final String url;
-  NetworkImageView({required this.url, super.key});
+  BoxFit aspectType;
+  NetworkImageView(
+      {required this.url, this.aspectType = BoxFit.cover, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class NetworkImageView extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: imageProvider,
-            fit: BoxFit.cover,
+            fit: aspectType,
           ),
         ),
       ),

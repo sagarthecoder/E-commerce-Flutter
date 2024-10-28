@@ -29,4 +29,11 @@ class ProductController extends GetxController {
     isLoading.value = false;
     return list;
   }
+
+  Future<ProductInfo?> getProduct(int id) async {
+    isLoading.value = true;
+    final product = await service.fetchSingleProduct(id.toString());
+    isLoading.value = false;
+    return product;
+  }
 }

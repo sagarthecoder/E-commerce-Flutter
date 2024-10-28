@@ -4,35 +4,40 @@ import '../../models/product-info.dart';
 
 class ProductCell extends StatelessWidget {
   final ProductInfo productInfo;
-
-  ProductCell({required this.productInfo, super.key});
+  final Function(int? id) onTap;
+  ProductCell({required this.productInfo, required this.onTap, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 6,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: Stack(
-          children: [
-            _buildImage(),
-            _buildRating(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: _buildDescription(),
+    return GestureDetector(
+      onTap: () {
+        onTap(productInfo.id);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 6,
+              offset: const Offset(0, 3),
             ),
           ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: Stack(
+            children: [
+              _buildImage(),
+              _buildRating(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: _buildDescription(),
+              ),
+            ],
+          ),
         ),
       ),
     );
