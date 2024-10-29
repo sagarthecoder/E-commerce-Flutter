@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/controller/product-controller.dart';
+import 'package:get/get.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/models/product-info.dart';
-
 import '../../../../common-views/NetworkImageView.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final ProductInfo productInfo;
+  final _controller = Get.find<ProductController>();
   ProductDetailsScreen({
     required this.productInfo,
     super.key,
@@ -99,29 +101,40 @@ class ProductDetailsScreen extends StatelessWidget {
   Widget _buildCartButton() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: () {
-            print("Cart action");
-          },
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            backgroundColor: Colors.blueAccent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+      child: Obx(() => AnimatedScale(
+            scale: _controller.isProductInCart(productInfo.id) ? 1.1 : 1.0,
+            duration: const Duration(milliseconds: 300),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  _controller.isProductInCart(productInfo.id)
+                      ? _controller.removeFromCart(productInfo.id)
+                      : _controller.addToCart(productInfo.id);
+                  // cartController.toggleCartStatus();
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: _controller.isProductInCart(productInfo.id)
+                      ? Colors.redAccent
+                      : Colors.blueAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                child: Text(
+                  _controller.isProductInCart(productInfo.id)
+                      ? "Remove from Cart"
+                      : "Add to Cart",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
-          ),
-          child: const Text(
-            "Add to Cart",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ),
+          )),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/custom-tab-bar/custom-tab-controller.dart';
+import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/views/cart/cart-screen.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/views/search/SearchScreen.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +14,9 @@ class CustomTabbedWidget extends StatelessWidget {
     // TODO: implement build
     final CustomTabController tabController = Get.put(CustomTabController());
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
       bottomNavigationBar: TabBar(
         tabs: tabController.tabs,
         controller: tabController.controller,
@@ -23,7 +26,7 @@ class CustomTabbedWidget extends StatelessWidget {
         children: [
           DashboardScreen(),
           SearchScreen(),
-          Text("Cart"),
+          CartScreen(),
           Text("Setting"),
         ],
       ),

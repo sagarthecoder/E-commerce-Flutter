@@ -10,6 +10,7 @@ class DashboardScreen extends StatelessWidget {
   DashboardScreen({super.key}) {
     _controller.getCategories();
     _controller.getAllProducts();
+    _controller.getAllCarts();
   }
 
   @override
