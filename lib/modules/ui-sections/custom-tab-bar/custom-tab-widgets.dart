@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce/modules/Settings/Views/SettingScreen.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/custom-tab-bar/custom-tab-controller.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/views/cart/cart-screen.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/views/search/SearchScreen.dart';
@@ -27,7 +28,7 @@ class CustomTabbedWidget extends StatelessWidget {
           DashboardScreen(),
           SearchScreen(),
           CartScreen(),
-          Text("Setting"),
+          SettingScreen(),
         ],
       ),
     );

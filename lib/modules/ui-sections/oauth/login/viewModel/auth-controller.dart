@@ -29,6 +29,11 @@ class AuthController extends GetxController {
       validateEmail(email.value) == null &&
       validatePassword(password.value) == null;
 
+  bool get isValidPassConfirmPass =>
+      validatePassword(password.value) == null &&
+      validatePassword(confirmPassword.value) == null &&
+      password.value == confirmPassword.value;
+
   bool get isValidEmailPassConfirmPass =>
       validateEmail(email.value) == null &&
       validatePassword(password.value) == null &&
@@ -114,6 +119,34 @@ class AuthController extends GetxController {
       print("Error sending password reset email = ${err.toString()}");
     }
     isLoading.value = false;
+    return false;
+  }
+
+  Future<bool> updatePassword(String pass) async {
+    isLoading.value = true;
+    errorText.value = "";
+    try {
+      await AuthService.shared.updatePassword(pass);
+      isLoading.value = false;
+      return true;
+    } catch (err) {
+      errorText.value = err.toString();
+      print("Error Updating password = ${err.toString()}");
+    }
+    return false;
+  }
+
+  Future<bool> logout() async {
+    isLoading.value = true;
+    errorText.value = "";
+    try {
+      await AuthService.shared.logout();
+      isLoading.value = false;
+      return true;
+    } catch (err) {
+      print("Error to logout = ${err.toString()}");
+      errorText.value = err.toString();
+    }
     return false;
   }
 }
