@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/controller/product-controller.dart';
 import 'package:get/get.dart';
-import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/models/product-info.dart';
+
 import '../../../../common-views/NetworkImageView.dart';
+import '../../controller/product-controller.dart';
+import '../../models/product-info.dart';
+import '../checkout/checkout-screen.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final ProductInfo productInfo;
   final _controller = Get.find<ProductController>();
+
   ProductDetailsScreen({
     required this.productInfo,
     super.key,
@@ -33,6 +36,7 @@ class ProductDetailsScreen extends StatelessWidget {
             _buildProductImage(),
             _buildProductInfo(),
             _buildCartButton(),
+            _buildCheckoutButton(),
           ],
         ),
       ),
@@ -111,7 +115,6 @@ class ProductDetailsScreen extends StatelessWidget {
                   _controller.isProductInCart(productInfo.id)
                       ? _controller.removeFromCart(productInfo.id)
                       : _controller.addToCart(productInfo.id);
-                  // cartController.toggleCartStatus();
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -135,6 +138,33 @@ class ProductDetailsScreen extends StatelessWidget {
               ),
             ),
           )),
+    );
+  }
+
+  Widget _buildCheckoutButton() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () => Get.to(() => CheckoutScreen()),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            backgroundColor: Colors.green,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ),
+          child: const Text(
+            "Checkout",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
