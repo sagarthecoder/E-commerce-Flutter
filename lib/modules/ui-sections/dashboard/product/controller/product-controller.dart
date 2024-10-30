@@ -1,4 +1,4 @@
-import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/helper/cart-helper.dart';
+import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/helper/product-db-helper.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/interfaces/product-interface.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/models/product-info.dart';
 import 'package:get/get.dart';
@@ -11,6 +11,7 @@ class ProductController extends GetxController {
   final searchedProducts = <ProductInfo>[].obs;
   final cartProducts = <ProductInfo>[].obs;
   final isLoading = false.obs;
+  var reviews = <String>[].obs;
 
   Future<void> getCategories() async {
     final list = await service.fetchProductCategories();
@@ -26,7 +27,7 @@ class ProductController extends GetxController {
   }
 
   Future<void> getAllCarts() async {
-    final ids = await CartHelper.getCartItemIds();
+    final ids = await ProductDBHelper.getCartItemIds();
     cartProducts.value = [];
     for (var id in ids) {
       final product = await getProduct(id);
@@ -52,7 +53,7 @@ class ProductController extends GetxController {
   Future<void> addToCart(int? id) async {
     if (id == null) return;
     isLoading.value = true;
-    await CartHelper.addCartItemId(id);
+    await ProductDBHelper.addCartItemId(id);
     final item = await getProduct(id);
     isLoading.value = false;
     if (item == null) return;
@@ -62,7 +63,7 @@ class ProductController extends GetxController {
   Future<void> removeFromCart(int? id) async {
     if (id == null) return;
     isLoading.value = true;
-    await CartHelper.removeCartItemId(id);
+    await ProductDBHelper.removeCartItemId(id);
     final item = await getProduct(id);
     isLoading.value = false;
     if (item == null) return;
@@ -72,5 +73,15 @@ class ProductController extends GetxController {
   bool isProductInCart(int? id) {
     if (id == null) return false;
     return cartProducts.any((product) => product.id == id);
+  }
+
+  Future<void> fetchReviews(int productId) async {
+    final reviews = await ProductDBHelper.getReviews(productId);
+    this.reviews.value = reviews;
+  }
+
+  Future<void> addReview(int productId, String reviewText) async {
+    await ProductDBHelper.addReview(productId, reviewText);
+    await fetchReviews(productId);
   }
 }

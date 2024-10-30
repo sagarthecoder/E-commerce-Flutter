@@ -5,6 +5,7 @@ import '../../../../common-views/NetworkImageView.dart';
 import '../../controller/product-controller.dart';
 import '../../models/product-info.dart';
 import '../checkout/checkout-screen.dart';
+import '../review/review-section.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final ProductInfo productInfo;
@@ -37,6 +38,7 @@ class ProductDetailsScreen extends StatelessWidget {
             _buildProductInfo(),
             _buildCartButton(),
             _buildCheckoutButton(),
+            ReviewSection(productId: productInfo.id ?? 0),
           ],
         ),
       ),
@@ -45,7 +47,7 @@ class ProductDetailsScreen extends StatelessWidget {
 
   Widget _buildProductImage() {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       height: 300,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12.0),
