@@ -18,6 +18,10 @@ class CustomTabController extends GetxController
       icon: Icon(Icons.add_shopping_cart_outlined),
     ),
     Tab(
+      text: "History",
+      icon: Icon(Icons.history),
+    ),
+    Tab(
       text: "Settings",
       icon: Icon(Icons.settings),
     )

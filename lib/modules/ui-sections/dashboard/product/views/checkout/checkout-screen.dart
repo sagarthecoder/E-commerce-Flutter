@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/controller/product-controller.dart';
+import 'package:get/get.dart';
 
 class CheckoutScreen extends StatelessWidget {
+  final int productId;
   final RxBool isSubmitted = false.obs;
+  final _controller = Get.find<ProductController>();
+  CheckoutScreen({required this.productId, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +80,8 @@ class CheckoutScreen extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
+          await _submitOrder();
           isSubmitted.value = true;
           Future.delayed(const Duration(seconds: 3), () {
             isSubmitted.value = false;
@@ -100,5 +104,10 @@ class CheckoutScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _submitOrder() async {
+    await _controller.submitOrder(productId);
+    print("Product $productId marked as purchased.");
   }
 }

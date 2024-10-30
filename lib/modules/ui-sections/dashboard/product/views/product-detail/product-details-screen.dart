@@ -149,7 +149,9 @@ class ProductDetailsScreen extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: ElevatedButton(
-          onPressed: () => Get.to(() => CheckoutScreen()),
+          onPressed: () => Get.to(() => CheckoutScreen(
+                productId: productInfo.id ?? 0,
+              )),
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16),
             backgroundColor: Colors.green,

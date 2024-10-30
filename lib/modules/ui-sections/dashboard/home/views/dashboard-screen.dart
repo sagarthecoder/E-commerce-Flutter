@@ -3,7 +3,6 @@ import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/controll
 import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/views/product-category/product-category-view.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/dashboard/product/views/product-list/product-list-view.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class DashboardScreen extends StatelessWidget {
   final _controller = Get.find<ProductController>();
@@ -11,6 +10,7 @@ class DashboardScreen extends StatelessWidget {
     _controller.getCategories();
     _controller.getAllProducts();
     _controller.getAllCarts();
+    _controller.getPurchasedProducts();
   }
 
   @override

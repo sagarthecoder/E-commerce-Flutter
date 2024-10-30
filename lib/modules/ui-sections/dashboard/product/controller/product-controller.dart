@@ -12,6 +12,7 @@ class ProductController extends GetxController {
   final cartProducts = <ProductInfo>[].obs;
   final isLoading = false.obs;
   var reviews = <String>[].obs;
+  var purchasedProducts = <ProductInfo>[].obs;
 
   Future<void> getCategories() async {
     final list = await service.fetchProductCategories();
@@ -83,5 +84,34 @@ class ProductController extends GetxController {
   Future<void> addReview(int productId, String reviewText) async {
     await ProductDBHelper.addReview(productId, reviewText);
     await fetchReviews(productId);
+  }
+
+  Future<void> submitOrder(int productId) async {
+    isLoading.value = true;
+    await ProductDBHelper.addPurchasedProductId(productId);
+    final item = await getProduct(productId);
+    isLoading.value = false;
+    if (item == null) return;
+    purchasedProducts.add(item);
+  }
+
+  Future<void> getPurchasedProducts() async {
+    final ids = await ProductDBHelper.getPurchasedProductIds();
+    purchasedProducts.value = [];
+    for (var id in ids) {
+      final product = await getProduct(id);
+      if (product == null) continue;
+      purchasedProducts.add(product);
+    }
+  }
+
+  Future<void> removeFromPurchaseHistory(int? id) async {
+    if (id == null) return;
+    isLoading.value = true;
+    await ProductDBHelper.removePurchaseItemId(id);
+    final item = await getProduct(id);
+    isLoading.value = false;
+    if (item == null) return;
+    purchasedProducts.removeWhere((product) => product.id == id);
   }
 }

@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProductDBHelper {
   static const String _cartKey = 'my_shop_cart';
   static const String _reviewKeyPrefix = 'product_reviews_';
+  static const String _purchasedKey = 'my_shop_purchased';
 
   static Future<void> addCartItemId(int id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -54,5 +55,36 @@ class ProductDBHelper {
     String reviewKey = '$_reviewKeyPrefix$productId';
 
     return prefs.getStringList(reviewKey) ?? [];
+  }
+
+  static Future<void> addPurchasedProductId(int id) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> purchasedIds = prefs.getStringList(_purchasedKey) ?? [];
+    if (!purchasedIds.contains(id.toString())) {
+      purchasedIds.add(id.toString());
+      await prefs.setStringList(_purchasedKey, purchasedIds);
+      print("ID $id added to purchased items.");
+    } else {
+      print("ID $id is already in the purchased items.");
+    }
+  }
+
+  // Fetch all purchased product IDs
+  static Future<List<int>> getPurchasedProductIds() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> purchasedIds = prefs.getStringList(_purchasedKey) ?? [];
+    return purchasedIds.map((id) => int.parse(id)).toList();
+  }
+
+  static Future<void> removePurchaseItemId(int id) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> ids = prefs.getStringList(_purchasedKey) ?? [];
+    if (ids.contains(id.toString())) {
+      ids.remove(id.toString());
+      await prefs.setStringList(_purchasedKey, ids);
+      print("ID $id removed from Purchase History.");
+    } else {
+      print("ID $id is not in the Purchase History.");
+    }
   }
 }
