@@ -35,7 +35,7 @@ class ProfileScreen extends StatelessWidget {
             radius: 50,
             backgroundImage: user.photoURL != null
                 ? NetworkImage(user.photoURL!)
-                : const AssetImage('assets/images/default_avatar.png')
+                : const AssetImage('utils/assets/images/default_avatar.png')
                     as ImageProvider,
           ),
         ),
