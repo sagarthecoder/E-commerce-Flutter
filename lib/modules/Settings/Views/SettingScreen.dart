@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/oauth/ResetPassword/Views/ResetPasswordScreen.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/oauth/login/viewModel/auth-controller.dart';
 import 'package:flutter_ecommerce/modules/ui-sections/oauth/login/views/login-screen.dart';
+import 'package:flutter_ecommerce/modules/ui-sections/user/user-screen.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -64,7 +65,6 @@ class SettingScreen extends StatelessWidget {
           _buildSettingItem(
               context, SettingItem.resetPassword, Icons.lock_reset_outlined),
           _buildSettingItem(context, SettingItem.profile, Icons.person_outline),
-          _buildSettingItem(context, SettingItem.security, Icons.lock_outline),
           _buildSettingItem(context, SettingItem.logout, Icons.logout_outlined),
           const Spacer(),
           _buildFooter(),
@@ -109,7 +109,7 @@ class SettingScreen extends StatelessWidget {
       children: [
         Divider(color: Colors.white54),
         Text(
-          '© 2024 Movie-Hub',
+          '© 2024 My-Store developed by sagarthecoder',
           style: TextStyle(color: Colors.white54, fontSize: 14),
         ),
       ],
@@ -123,6 +123,8 @@ class SettingScreen extends StatelessWidget {
         break;
       case SettingItem.language:
         Get.to(() => LanguageView());
+      case SettingItem.profile:
+        Get.to(() => ProfileScreen());
       case SettingItem.logout:
         bool isSuccess = await _authController.logout();
         if (isSuccess) {
